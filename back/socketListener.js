@@ -86,6 +86,11 @@ function listen(io) {
         socket.on('getAllRooms', function() {
             socket.emit('getAllRooms', ROOMS)
         })
+
+        socket.on('getRoomLink', function(room) {
+            let roomObject = ROOMS.find(r => r.name === room)
+            socket.emit('getRoomLink', roomObject.link)
+        })
     });
 }
 
