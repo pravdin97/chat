@@ -11,13 +11,17 @@ function App() {
   // текущая комната
   let [room, setRoom] = useState()
 
+  function leaveRoom() {
+    setRoom(undefined)
+  }
+
   return (
     <div className="App">
       { user === undefined ? 
         <EnterUserName recieveUser={setUser} /> :
           room === undefined ?
           <ChooseRoom recieveRoom={setRoom}/> :
-            <Chat room={room} user={user}/>
+            <Chat room={room} user={user} onLeave={leaveRoom}/>
       }
     </div>
   );

@@ -38,13 +38,16 @@ function ChooseRoom({recieveRoom}) {
             </label>
             <input type="submit" value="ОК" onClick={acceptLink}/>
 
+            <ul className="roomList">
             {
                 roomlist !== undefined ?
                 roomlist.map(room =>      
-                    <input type="submit" key={room.link} value={room.name} onClick={event => chooseRoom(event.target.value)}/>
+                    <li key={room.link}><input className="roomItem" type="submit"  value={room.name} onClick={event => chooseRoom(event.target.value)}/>
+                    </li>
                         
                 ) : <div>There are no rooms yet</div>
             }
+            </ul>
         </div>
     )
 }
