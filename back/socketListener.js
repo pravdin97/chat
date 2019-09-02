@@ -1,11 +1,16 @@
 const User = require('./models/User')
 const Chatroom = require('./models/Chatroom')
 
-const USERS = []
-const ROOMS = [new Chatroom('lol'), new Chatroom('kek')]
+let USERS = []
+let ROOMS = [new Chatroom('default-room1'), new Chatroom('default-room2')]
 
 function listen(io) {
     io.on('connection', function(socket){
+
+        // пользователь вышел
+        socket.on('disconnect', function() {
+            USERS = USERS.filter(user => user.id !== socket.id)
+        })
 
         // пользователь выбрал комнату
         socket.on('subscribe', function(room) { 
@@ -36,9 +41,9 @@ function listen(io) {
         // сообщение отправлено
         socket.on('sendMessage', function(room, data) {
             console.log('sending message');
-            io.in(room).emit('message', data);
             let roomObject = ROOMS.find(r => r.name === room)
             roomObject.messages.push(data)
+            io.in(room).emit('message', roomObject.messages);
         })
 
         // создание пользователя
