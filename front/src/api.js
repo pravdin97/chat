@@ -44,6 +44,11 @@ function onlineUsers(room, callback) {
     socket.on('onlineUsers', onlineUsers => callback(onlineUsers))
 }
 
+function getRoomLink(room, callback) {
+    socket.emit('getRoomLink', room)
+    socket.on('getRoomLink', link => callback(link))
+}
+
 export {
     createUser,
     getAllRooms,
@@ -52,5 +57,6 @@ export {
     sendMessage,
     joinRoom,
     onlineUsers,
-    leaveRoom
+    leaveRoom,
+    getRoomLink
 }

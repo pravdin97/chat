@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getMessageHistory, sendMessage, onlineUsers, leaveRoom } from '../api'
+import { getMessageHistory, sendMessage, onlineUsers, leaveRoom, getRoomLink } from '../api'
 
 function Chat({user, room, onLeave}) {
     
@@ -9,8 +9,11 @@ function Chat({user, room, onLeave}) {
 
     let [online, setOnline] = useState()
 
+    let [link, setLink] = useState()
+
     useEffect(() => {
         getMessageHistory(room, setMessages)
+        getRoomLink(room, setLink)
     }, [room])
 
     function handleChangeMessageText(event) {
@@ -38,8 +41,13 @@ function Chat({user, room, onLeave}) {
     }
     
     return <div className="chatArea">
+        
         <div className="online">
-            <input type="button" value="Выйти" onClick={leave} />
+            <div>
+                <p>{room}</p>
+                <p>Ссылка: {link}</p>
+                <input type="button" value="Выйти" onClick={leave} />
+            </div>
             <input type="button" value="Обновить список пользователей" onClick={updateOnline}/>
             <p>Онлайн:</p>
             {
