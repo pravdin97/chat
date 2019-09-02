@@ -1,7 +1,8 @@
 const User = require('./models/User')
+const Chatroom = require('./models/Chatroom')
 
 const USERS = []
-const ROOMS = []
+const ROOMS = [new Chatroom('lol'), new Chatroom('kek')]
 
 function listen(io) {
     io.on('connection', function(socket){
@@ -9,14 +10,19 @@ function listen(io) {
         // пользователь выбрал комнату
         socket.on('subscribe', function(room) { 
             console.log('joining room', room);
+            let roomObject = ROOMS.find(r => r.name === room)
+            if (roomObject === undefined)
+                ROOMS.push(new Chatroom(room))
             socket.join(room);
         })
 
         // пользователь подключился к комнате по ссылке
-        socket.on('subscribe', function(link) { 
+        socket.on('subscribeViaLink', function(link) { 
             let roomObject = ROOMS.find(r => r.link === link)
-            if (roomObject !== undefined)
-                socket.join(room); 
+            if (roomObject !== undefined) {
+                socket.join(roomObject.name);
+                socket.emit('room', roomObject.name)
+            }
             else
                 socket.emit('invalid link')
         })
@@ -30,7 +36,7 @@ function listen(io) {
         // сообщение отправлено
         socket.on('sendMessage', function(room, data) {
             console.log('sending message');
-            io.sockets.in(room).emit('message', data);
+            io.in(room).emit('message', data);
             let roomObject = ROOMS.find(r => r.name === room)
             roomObject.messages.push(data)
         })
@@ -70,8 +76,11 @@ function listen(io) {
             let roomObject = ROOMS.find(r => r.name === room)
             socket.emit('messageHistory', roomObject.messages)
         })
-
         
+        // получить все комнаты
+        socket.on('getAllRooms', function() {
+            socket.emit('getAllRooms', ROOMS)
+        })
     });
 }
 
