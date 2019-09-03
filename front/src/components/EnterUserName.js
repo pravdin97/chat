@@ -12,15 +12,14 @@ function EnterUserName(props) {
         createUser(username, props.recieveUser)
     }
     
-    return(
-        <div className="enterUsername">
-            <label>
-                Имя пользователя:
-                <input type="text" value={username} onChange={handleChangeName} />
-            </label>
-            <input type="submit" value="Отправить" onClick={acceptUsername} />
+    return <div className="text-center">
+            <div className="form-signin">
+                <h1 className="h3 mb-3 font-weight-normal">Введите имя пользователя</h1>
+                <input className="form-control" type="text" placeholder="Имя пользователя" value={username} onChange={handleChangeName} />
+                <input className="btn btn-lg btn-success btn-block" type="submit" value="Отправить" onClick={acceptUsername} />
+            </div>
         </div>
-    )
+    
 }
 
 export default EnterUserName

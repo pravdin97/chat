@@ -31,23 +31,24 @@ function ChooseRoom({recieveRoom}) {
     }
 
     return(
-        <div>
+        <div className="container">
             <label>
                 Ссылка на комнату:
-                <input type="text" onChange={handleChangeLink}/>
+                <input className="form-control" type="text" onChange={handleChangeLink}/>
             </label>
-            <input type="submit" value="ОК" onClick={acceptLink}/>
+            <input className="m-2 btn btn-success" type="submit" value="ОК" onClick={acceptLink}/>
 
-            <ul className="roomList">
-            {
-                roomlist !== undefined ?
-                roomlist.map(room =>      
-                    <li key={room.link}><input className="roomItem" type="submit"  value={room.name} onClick={event => chooseRoom(event.target.value)}/>
-                    </li>
-                        
-                ) : <div>There are no rooms yet</div>
-            }
-            </ul>
+            <div className="container">
+                <h2>Список доступных комнат</h2>
+                <ul className="list-group">
+                {
+                    roomlist !== undefined ?
+                    roomlist.map(room =>      
+                        <input key={room.link} className="list-group-item list-group-item-action" type="submit"  value={room.name} onClick={event => chooseRoom(event.target.value)}/>
+                    ) : <div>There are no rooms yet</div>
+                }
+                </ul>
+            </div>
         </div>
     )
 }
